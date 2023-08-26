@@ -4,7 +4,7 @@
     <% for (i in answers) { %>
         <button class="bg-blue-500 m-0.5 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
                 hx-post="/valanswers" 
-                hx-vals='{"sessId": "<%- data.sessId %>", "answers": "<%- answers %>", "selectedAns": "<%= i %>" , "question_no": "<%= parseInt(data.question_no) %>" }' 
+                hx-vals='{"sessId": "<%- data.sessId %>", "answers": "<%= answers %>", "selectedAns": "<%= i %>" , "question_no": "<%= parseInt(data.question_no) %>" }' 
                 hx-target="#answer_buttons"
                 hx-swap="innerHTML" >
             <%= decode(answers[i]) %>

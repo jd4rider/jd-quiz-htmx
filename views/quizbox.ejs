@@ -15,4 +15,14 @@
                </script></div>
 
       </div>
+
+      <script>
+        document.body.addEventListener('htmx:beforeSwap', function(evt) {
+          if(parseInt("<%= parseInt(data.question_no) %>") == parseInt("<%= data.numofquestions %>")){
+            document.getElementById("current_number").innerHTML = "1"
+          } else {
+            document.getElementById("current_number").innerHTML = "<%= parseInt(data.question_no) + 1 %>"
+          }
+        });
+    </script>
 </div>

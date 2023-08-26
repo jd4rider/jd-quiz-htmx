@@ -32,7 +32,8 @@ app.post('/answers', async (req, res) => {
     
 
     const answerss = results[data.question_no].incorrect_answers.concat(results[data.question_no].correct_answer);
-    const shuffledAnswers = answerss.sort(() => Math.random() - 0.5);
+    let shuffledAnswers = answerss.sort(() => Math.random() - 0.5);
+    shuffledAnswers = fixDates(shuffledAnswers);
 
     await res.render('answers.ejs', {'results': results[data.question_no], 'answers': answerss, 'data': data, 'decode': he.decode })
 })
@@ -50,9 +51,7 @@ app.post('/valanswers', async (req, res) => {
 
     const answers = data.answers.split(',')
 
-    console.log(answers[data.selectedAns]);
-
-    correctAnsChosen = answers[data.selectedAns] == results[data.question_no].correct_answer
+    correctAnsChosen = he.decode(answers[data.selectedAns]) == he.decode(results[data.question_no].correct_answer)
 
 
 
@@ -108,6 +107,13 @@ app.listen(port, () => {
 function generateId() {   
     return Math.random().toString(36).substring(2) +
         (new Date()).getTime().toString(36);
+}
+
+function fixDates(arr) {
+    for (let i in arr) {
+        arr[i] = arr[i].replace(/,/g, '&#44;')
+    }
+    return arr;
 }
 
 module.exports = app;
