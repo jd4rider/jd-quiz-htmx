@@ -1,0 +1,92 @@
+<div id="answer_buttons">
+    <% if (correct) { %>
+        <div class="bg-green-100 border-t border-b border-green-500 text-green-700 px-4 py-3" role={"alert"}>
+        <p class="text-sm text-center">That answer is Correct!</p>
+        <p class="text-sm text-center">The answer you chose is:</p>
+        <p class="text-base text-center font-bold italic">
+            <%= decode(results.correct_answer) %>
+        </p>
+        </div>
+    <% } else { %>
+        <div class="bg-red-100 border-t border-b border-red-500 text-red-700 px-4 py-3" role={"alert"}>
+        <p class="text-sm text-center">That answer is Incorrect!</p>
+        <p class="text-sm text-center">The correct answer is:</p>
+        <p class="text-base text-center font-bold italic">
+            <%= decode(results.correct_answer) %>
+        </p>
+        </div>
+    <% } %>
+
+    <div class="font-bold text-xl mb-2 text-center py-4"><%= decode(results.question) %></div>
+    
+
+
+
+    <% for (i in answers) { %>
+        <% if (correct && selectedAns == i) { %>
+            <button disabled="true"
+                    class="bg-green-500 m-0.5 w-full text-white font-bold py-2 px-4 rounded cursor-not-allowed" 
+                    hx-post="/valanswers" 
+                    hx-vals='{"sessId": "<%- data.sessId %>", "selectedAns": "<%= i %>" , "question_no": "<%= parseInt(data.question_no) + 1 %>" }' 
+                    hx-target="#answer_buttons"
+                    hx-swap="innerHTML" >
+                <%= decode(answers[i]) %>
+            </button> 
+        <% } else if (!correct && selectedAns == i) { %>
+            <button disabled="true"
+                    class="bg-red-500 m-0.5 w-full text-white font-bold py-2 px-4 rounded cursor-not-allowed" 
+                    hx-post="/valanswers" 
+                    hx-vals='{"sessId": "<%- data.sessId %>", "selectedAns": "<%= i %>" , "question_no": "<%= parseInt(data.question_no) + 1 %>" }' 
+                    hx-target="#answer_buttons"
+                    hx-swap="innerHTML" >
+                <%= decode(answers[i]) %>
+            </button>
+        <% } else if (!correct && answers[i] == results.correct_answer) { %>
+            <button disabled="true"
+                    class="bg-green-500 m-0.5 w-full text-white font-bold py-2 px-4 rounded cursor-not-allowed" 
+                    hx-post="/valanswers" 
+                    hx-vals='{"sessId": "<%- data.sessId %>", "selectedAns": "<%= i %>" , "question_no": "<%= parseInt(data.question_no) + 1 %>" }' 
+                    hx-target="#answer_buttons"
+                    hx-swap="innerHTML" >
+                <%= decode(answers[i]) %>
+            </button> 
+        <% } else { %>
+            <button disabled="true"
+                    class="bg-blue-500 m-0.5 w-full text-white font-bold py-2 px-4 rounded cursor-not-allowed" 
+                    hx-post="/valanswers" 
+                    hx-vals='{"sessId": "<%- data.sessId %>", "selectedAns": "<%= i %>" , "question_no": "<%= parseInt(data.question_no) + 1 %>" }' 
+                    hx-target="#answer_buttons"
+                    hx-swap="innerHTML" >
+                <%= decode(answers[i]) %>
+            </button>
+        <% } %>
+    <% } %>
+    <% if (!finish) { %>
+        <div class="px-6 pt-4 pb-2 text-center">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
+                    hx-post="/answers" 
+                    hx-vals='{"sessId": "<%- data.sessId %>", "question_no": "<%= parseInt(data.question_no) + 1 %>" }' 
+                    hx-target="#answer_buttons"
+                    hx-swap="innerHTML"
+                    hx-push-url="?question_no=<%= parseInt(data.question_no) + 2 %>">
+            Next
+            </button>
+        </div>
+    <% } else { %>
+        <div class="px-6 pt-4 pb-2 text-center">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
+                    hx-post="/form"
+                    hx-target="main"
+                    hx-swap="innerHTML"
+                    hx-push-url="/">
+            Restart
+            </button>
+        </div>
+    <% } %>
+    
+        <script>
+            document.body.addEventListener('htmx:beforeSwap', function(evt) {
+                document.getElementById("current_number").innerHTML = "<%= parseInt(data.question_no) + 2 %>"
+            });
+        </script>
+    </div>

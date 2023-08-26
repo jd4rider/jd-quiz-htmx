@@ -1,0 +1,18 @@
+<div class="bg-white max-w-lg rounded overflow-hidden shadow-lg">
+    <div class="px-6 py-4">
+        <h3 class="bg-gray-100 text-center py-3">
+          Question #<span id="current_number"></span> of <%= data.numofquestions %>
+          <br />
+          Category - <%= data.categoriesname %>
+          <br />
+          Difficulty: <%= data.difficulty %>
+        </h3>
+          <div hx-post="/answers" 
+               hx-vals='{"sessId": "<%- sessId %>", "question_no": "<%= data.question_no %>" }' 
+               hx-trigger="load" 
+               hx-swap="outerHTML"><script>
+                 document.getElementById("current_number").innerHTML = "<%= parseInt(data.question_no) + 1 %>"  
+               </script></div>
+
+      </div>
+</div>
