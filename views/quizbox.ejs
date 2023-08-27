@@ -10,9 +10,7 @@
           <div hx-post="/answers" 
                hx-vals='{"sessId": "<%- sessId %>", "question_no": "<%= data.question_no %>" }' 
                hx-trigger="load" 
-               hx-swap="outerHTML"><script>
-                 document.getElementById("current_number").innerHTML = "<%= parseInt(data.question_no) + 1 %>"  
-               </script></div>
+               hx-swap="outerHTML"></div>
 
       </div>
 
